@@ -1,0 +1,23 @@
+pipeline {
+    agent any 
+    environment{
+    DOCKERHUB_CREDENTIALS = credentials('vaishnd-dockerhub')
+    }
+    stages {
+        stage('SCM checkout'){
+        git 'https://github.com/dingarivaishnavi/mycapstone.git'
+	}
+        stage ("Build") {
+            steps{
+               sh 'chmod +x build.sh'     
+	       sh './build.sh'
+            }
+        }
+        stage ("deploy") {
+            steps{
+		sh 'chmod +x deploy.sh'
+                sh './deploy.sh' 
+            }
+        }
+    }
+}
